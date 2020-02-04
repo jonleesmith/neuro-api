@@ -49,19 +49,18 @@ Route.group(() => {
     Route.post('auth/register', 'AuthController.register')
     Route.post('auth/login', 'AuthController.login')
 
-}).prefix('v1')
+})
 
 Route.group(() => {
 
     Route.get('auth/me', 'AuthController.me');
     Route.post('auth/logout', 'AuthController.logout')
 
-}).prefix('v1').middleware(['auth'])
+}).middleware(['auth'])
 
 Route.group(() => {
 
     Route.get('/collections', 'ElementController.index')
     Route.get('/collections/:collection', 'ElementController.show').middleware('rmb:Neuro/CollectionRepository,collection')
 
-
-}).prefix('v1/:site').middleware([])
+}).prefix(':site').middleware([])
