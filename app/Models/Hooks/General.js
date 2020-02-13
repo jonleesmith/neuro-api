@@ -25,12 +25,3 @@ GeneralHook.generateHandle = async (model) => {
     }
 
 }
-
-GeneralHook.generateUniqueID = async (model) => {
-
-    if ( !model.uuid )
-    {
-        model.uuid = `${model.org_id}_${model.handle}`
-    }
-
-}

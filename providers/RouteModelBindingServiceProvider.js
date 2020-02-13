@@ -7,7 +7,7 @@ async function bindModels(request, next, [repository, param, column]) {
     const value = request.params[param];
     if ( value )
     {
-        request[param] = await use(repository).findOne(value);
+        request[param] = await use(repository).findOneBy({ [column]: value });
     }
     await next();
 }

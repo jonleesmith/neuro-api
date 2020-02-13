@@ -2,22 +2,50 @@
 
 const Collection = use('App/Models/Collection')
 const cp = use('Neuro/CollectionRepository')
+const Database = use('Adonis/Src/Database')
 
 class ElementController {
 
     async index({ request, response, params })
     {
-        let collections = cp.findBy(request.all())
+        let elements = cp.findBy(request.all())
         let options = request.only(['page', 'limit']);
-        return response.withPagination(collections, options)
+        return response.withPagination(elements, options)
     }
 
-    async show({ request, response, params, collection })
+    async create({ request, response, params, project })
+    {
+        console.log(project)
+        let name = request.input('name')
+        // console.log(Database.Config)
+        // return
+        if ( name )
+        {
+            await Database.schema.createTable(name, (table) => {
+                // console.log(table)
+                // table.increments('id')
+            })
+            console.log(`collection ${name} create`)
+        }
+
+        return response.withItem({
+            id: 'Hi',
+            name: name,
+        })
+    }
+
+    async show({ request, response, params, element })
     {
         // Authorization
-        // request.authorize('show', collection);
-        console.log(collection)
-        return response.withItem(collection);
+        request.authorize('show', element);
+        return response.withItem(element);
+    }
+
+    async entries({ request, response, params, collection })
+    {
+        return response.withItem({
+            data: [collection]
+        })
     }
 
     async store({ request, response, params })

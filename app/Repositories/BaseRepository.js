@@ -17,8 +17,8 @@ class BaseRepository {
         return await this.findOneBy({ 'id': id });
     }
 
-    async findOneBy(criteria) {
-        return await this.model.query().where(criteria);
+    async findOneBy(col, val) {
+        return await this.model.findByOrFail(col, val)
     }
 
     findIn(key, values) {
@@ -65,17 +65,13 @@ class BaseRepository {
         return query;
     }
 
-    save() {
-        console.log(this.model.query().paginate(1))
-        // if ( in_array('user_id', this.model.getFillable()) )
-        // {
-        //     data['user_id'] = this.getUser().id;
-        // }
-
-        // return this.model.create(data);
+    save(data)
+    {
+        return this.model.create(data);
     }
 
-    update() {
+    update(data)
+    {
         // fillAbleProperties = this.model.getFillable();
 
         // foreach (data as key => value)

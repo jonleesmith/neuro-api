@@ -16,12 +16,21 @@ class AuthController {
             password
         })
 
-        const token = await auth.generate(user)
+        if ( user )
+        {
+            const token = await auth.generate(user)
 
-        return response.json({
-            status: 200,
-            data: token
-        })
+            return response.json({
+                status: 200,
+                data: token
+            })
+        }
+        else {
+            return response.json({
+                status: 422,
+                message: 'Unable to log you in with the details provided'
+            })
+        }
 
     }
 

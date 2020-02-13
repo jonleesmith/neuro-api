@@ -93,6 +93,9 @@ module.exports = {
     |
     */
     validationMessages: () => {
-        return {}
+        return {
+            'email.required': 'Email is required',
+            'password.mis_match': 'Invalid password'
+        }
     }
 }

@@ -12,8 +12,8 @@ class Field extends Model {
         return ['model']
     }
 
-    site() {
-        return this.belongsTo('App/Models/Site')
+    project() {
+        return this.belongsTo('App/Models/Project')
     }
 
     getModel() {

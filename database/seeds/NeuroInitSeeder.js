@@ -1,13 +1,13 @@
 'use strict'
 
 const User = use('App/Models/User');
-const Site = use('App/Models/Site');
+const Project = use('App/Models/Project');
 const Role = use('App/Models/Role');
 const shortid = require('shortid')
 
 /*
 |--------------------------------------------------------------------------
-| ConsciousSiteSeeder
+| NeuroSeeder
 |--------------------------------------------------------------------------
 |
 | Make use of the Factory instance to seed database with dummy data or
@@ -27,7 +27,6 @@ class NeuroInitSeeder {
 
         const users = await User.create({
     		role_id: superuser.id,
-            username: 'jonleesmith',
     		email: 'jonleesmith@me.com',
     		name: 'Jonathan Smith',
     		password: 'mpower21',

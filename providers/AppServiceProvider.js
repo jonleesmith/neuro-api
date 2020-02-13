@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider {
         const Request = use('Adonis/Src/Request');
         const Model = use('Model')
 
-        Response.macro('sendWithErrors', this.sendWithErrorsMacro)
+        Response.macro('withErrors', this.withErrorsMacro)
         Request.macro('authorize', this.authorizeMacro)
         Response.macro('withItem', this.withItemMacro)
         Response.macro('withPagination', this.withPaginationMacro)
@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider {
         return `${ ( timeAgo.indexOf('month') != -1 ) ? full : `${timeAgo}` }`
     }
 
-    sendWithErrorsMacro(errors, status)
+    withErrorsMacro(errors, status)
     {
         this.status(status)
         return this.json({

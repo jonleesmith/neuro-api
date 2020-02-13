@@ -6,16 +6,16 @@ const Schema = use('Schema')
 class UserSiteSchema extends Schema {
 
     up () {
-        this.create('user_sites', (table) => {
+        this.create('user_projects', (table) => {
             table.increments()
-            table.integer('site_id').unsigned().references('id').inTable('sites').onDelete('cascade')
+            table.integer('project_id').unsigned().references('id').inTable('projects').onDelete('cascade')
             table.integer('user_id').unsigned().references('id').inTable('users').onDelete('cascade')
             table.timestamps()
         })
     }
 
     down () {
-        this.drop('user_sites')
+        this.drop('user_projects')
     }
 
 }

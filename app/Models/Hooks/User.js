@@ -2,7 +2,6 @@
 
 const Hash = use('Hash')
 
-const { sanitizor } = use('Validator')
 
 const UserHook = module.exports = {}
 
@@ -15,7 +14,7 @@ const UserHook = module.exports = {}
  *
  * @return {void}
  */
-UserHook.hashPassword = async (model, updated) => {
+UserHook.hashPassword = async (model) => {
     if ( model.password )
     {
         model.password = await Hash.make(model.password)
@@ -23,7 +22,7 @@ UserHook.hashPassword = async (model, updated) => {
 }
 
 
-UserHook.updatePasswordHash = async (model, i) => {
+UserHook.updatePasswordHash = async (model) => {
     let newPassword = model.$attributes.password
 
     if ( newPassword )

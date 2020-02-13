@@ -2,7 +2,7 @@
 
 const Model = use('Model')
 
-class Site extends Model
+class Project extends Model
 {
 
     static boot() {
@@ -15,4 +15,4 @@ class Site extends Model
 
 }
 
-module.exports = Site
+module.exports = Project

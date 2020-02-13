@@ -10,56 +10,46 @@ const Raven = require('raven');
  * @class ExceptionHandler
  */
 class ExceptionHandler extends BaseExceptionHandler {
-  /**
-   * Handle exception thrown during the HTTP lifecycle
-   *
-   * @method handle
-   *
-   * @param  {Object} error
-   * @param  {Object} options.request
-   * @param  {Object} options.response
-   *
-   * @return {void}
-   */
-//   async handle (error, { request, response }) {
+    /**
+     * Handle exception thrown during the HTTP lifecycle
+     *
+     * @method handle
+     *
+     * @param  {Object} error
+     * @param  {Object} options.request
+     * @param  {Object} options.response
+     *
+     * @return {void}
+     */
+    async handle (error, { request, response }) {
 
-//     use('Logger').error(error)
+        use('Logger').error(error)
 
-//     // Not correct login
-//     if ( error.status == 401 )
-//     {
-//         response.status(401)
-//         return response.json({
-//             message: 'Unauthorized request',
-//         })
-//     }
+        if ( error.status == 401 )
+        {
+            response.status(401)
+            return response.json({
+                message: 'Unauthorized request',
+            })
+        }
 
-//     // Logged in but not correct permssions
-//     if ( error.name == 'UnauthorizedAccessException' )
-//     {
-//         response.status(403)
-//         return response.json({
-//             message: "You don't have the correct permissions",
-//         })
-//     }
+        //  Logged in but not correct permssions
+        if ( error.name == 'UnauthorizedAccessException' )
+        {
+            response.status(403)
+            return response.json({
+                message: "You don't have the correct permissions",
+            })
+        }
 
-//     // if ( error.status == 500 ) {
+        if (error.name === 'ValidationException')
+        {
+            return response.withErrors(error.messages, 422)
+        }
 
-//     //     Raven.captureException(error)
+        return response.status(error.status).send(error.message)
 
-//     //     if ( process.env.NODE_ENV == 'development' )
-//     //     {
-//             console.log(error)
-//     //     }
-
-//     //     return response.json({
-//     //         message: 'Something went wrong',
-//     //     })
-//     // }
-
-//     response.status(error.status).send(error.message)
-
-//   }
+    }
 
   /**
    * Report exception for logging or debugging.

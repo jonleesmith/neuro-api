@@ -10,7 +10,11 @@ class Collection extends Model {
 
         this.addHook('beforeCreate', 'General.addUUID');
         this.addHook('beforeCreate', 'General.generateHandle')
-	}
+    }
+    
+    static get primaryKey () {
+        return 'handle'
+    }
 
     static get fillable()
     {
@@ -22,14 +26,9 @@ class Collection extends Model {
 		return this.hasMany('App/Models/CollectionFieldset').orderBy('order', 'asc');
 	}
 
-    rows()
+    project()
     {
-        return this.manyThrough('App/Models/CollectionFieldset', 'rows').orderBy('order', 'asc');
-    }
-
-    site()
-    {
-        return this.belongsTo('App/Models/Site')
+        return this.belongsTo('App/Models/Project')
     }
 
 }
