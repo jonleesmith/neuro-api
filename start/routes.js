@@ -8,7 +8,6 @@
 */
 
 const Route = use('Route')
-const Nuxt = use('Nuxt')
 
 Route.group(() => {
 
