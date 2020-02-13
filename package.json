@@ -11,8 +11,7 @@
   "scripts": {
     "serve:dev": "npm run dev",
     "dev": "nodemon --watch app --watch bootstrap --watch config --watch .env -x node server.js",
-    "build": "ENV_SILENT=true node ./ace nuxtbuild",
-    "start": "cross-env NODE_ENV=production node server.js"
+    "start": "node server.js"
   },
 
   "dependencies": {
