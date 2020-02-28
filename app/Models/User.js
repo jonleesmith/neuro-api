@@ -26,41 +26,33 @@ class User extends Model {
 		return ['firstname']
 	}
 
-	getFirstname ({ name }) {
+    getFirstname ({ name })
+    {
 		return ( name ) ? name.split(/ /g)[0] : ''
 	}
 
-	/**
-	* A relationship on tokens is required for auth to
-	* work. Since features like `refreshTokens` or
-	* `rememberToken` will be saved inside the
-	* tokens table.
-	*
-	* @method tokens
-	*
-	* @return {Object}
-	*/
-	tokens () {
+    tokens ()
+    {
 		return this.hasMany('App/Models/Token')
 	}
 
-	role() {
+    role()
+    {
 		return this.belongsTo('App/Models/Role')
 	}
 
-    isSuperUser() {
-        return ( this.org_id == 1 )
-    }
-
-    permissions() {
+    permissions()
+    {
         return this.belongsToMany('App/Models/Permission').pivotTable('user_permissions')
     }
 
-    sites() {
-        return this.belongsToMany('App/Models/Site').pivotTable('user_sites')
+    projects()
+    {
+        return this.belongsToMany('App/Models/Project').pivotTable('user_projects')
     }
 
-    can() {
+    can()
+    {
 
     }
 

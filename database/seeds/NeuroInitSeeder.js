@@ -3,7 +3,8 @@
 const User = use('App/Models/User');
 const Project = use('App/Models/Project');
 const Role = use('App/Models/Role');
-const shortid = require('shortid')
+const Collection = use('App/Models/Collection');
+const UserProject = use('App/Models/UserProject');
 
 /*
 |--------------------------------------------------------------------------
@@ -25,12 +26,31 @@ class NeuroInitSeeder {
     		name: 'superuser'
     	})
 
-        const users = await User.create({
-    		role_id: superuser.id,
+        const user = await User.create({
+            role_id: superuser.id,
     		email: 'jonleesmith@me.com',
     		name: 'Jonathan Smith',
     		password: 'mpower21',
-    	})
+        })
+
+        const project = await Project.create({
+            name: 'Later',
+            handle: 'later'
+        })
+
+        const user_project = await UserProject.create({
+            user_id: user.id,
+            project_id: project.id
+        })
+
+        const collection = await Collection.create({
+            user_id: user.id,
+            project_id: project.id,
+            name: 'Bookmarks',
+            handle: 'bookmarks',
+            custom_order: true,
+            order_direction: 'asc',
+        })
 
     }
 

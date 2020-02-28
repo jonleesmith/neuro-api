@@ -5,11 +5,18 @@ const Model = use('Model')
 class Project extends Model
 {
 
-    static boot() {
-        super.boot()
+    collections()
+    {
+        return this.hasMany('App/Models/Collection')
     }
 
-    users() {
+    entries()
+    {
+        return this.hasMany('App/Models/Entry')
+    }
+
+    users()
+    {
         return this.hasMany('App/Models/User')
     }
 

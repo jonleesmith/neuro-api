@@ -1,5 +1,5 @@
 {
-  "name": "neuro-api",
+  "name": "@neuro/api",
   "version": "1.0.0",
   "description": "My ace Nuxt.js project",
   "author": "jonleesmith",
@@ -7,13 +7,12 @@
   "engines": {
     "node": "8.9.0",
     "npm": "5.5.1"
-},
+  },
   "scripts": {
     "serve:dev": "npm run dev",
     "dev": "nodemon --watch app --watch bootstrap --watch config --watch .env -x node server.js",
     "start": "node server.js"
   },
-
   "dependencies": {
     "@adonisjs/ace": "^5.0.8",
     "@adonisjs/auth": "^3.0.7",

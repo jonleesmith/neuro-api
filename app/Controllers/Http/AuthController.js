@@ -59,7 +59,7 @@ class AuthController {
     {
         let user = await auth.getUser();
 
-        // await user.loadMany(['role', 'org'])
+        await user.loadMany(['role', 'projects'])
 
         return response.json({
             data: user.toJSON()

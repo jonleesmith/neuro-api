@@ -11,7 +11,7 @@ class UserSchema extends Schema {
             table.string('email', 255).notNullable().unique()
             table.string('password', 60).notNullable()
             table.datetime('last_login').nullable()
-            table.integer('role_id').unsigned().references('id').inTable('roles').onDelete('cascade')
+            table.integer('role_id').unsigned().references('id').inTable('roles')
             table.timestamps()
         })
     }

@@ -2,6 +2,7 @@
 
 const { ServiceProvider } = require('@adonisjs/fold')
 const CollectionRepository = use('App/Repositories/CollectionRepository')
+const EntryRepository = use('App/Repositories/EntryRepository')
 
 class RepositoryServiceProvider extends ServiceProvider {
 
@@ -15,7 +16,11 @@ class RepositoryServiceProvider extends ServiceProvider {
     register () {
 
         this.app.bind('Neuro/CollectionRepository', function(app) {
-            return new CollectionRepository()
+            return new CollectionRepository(this)
+        })
+
+        this.app.bind('Neuro/EntryRepository', function (app) {
+            return new EntryRepository(this)
         })
 
     // this.app.bind(SiteRepository::class, EloquentSiteRepository::class);

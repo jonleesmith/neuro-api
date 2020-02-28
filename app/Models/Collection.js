@@ -4,31 +4,23 @@ const Model = use('Model')
 
 class Collection extends Model {
 
-    static boot()
+    static get primaryKey ()
     {
-		super.boot();
-
-        this.addHook('beforeCreate', 'General.addUUID');
-        this.addHook('beforeCreate', 'General.generateHandle')
-    }
-    
-    static get primaryKey () {
         return 'handle'
     }
 
     static get fillable()
     {
-        return ['name', 'uid']
+        return ['name', 'handle']
     }
-
-    fieldsets()
-    {
-		return this.hasMany('App/Models/CollectionFieldset').orderBy('order', 'asc');
-	}
 
     project()
     {
         return this.belongsTo('App/Models/Project')
+    }
+
+    entries() {
+        return this.belongsTo('App/Models/Entry')
     }
 
 }

@@ -4,7 +4,8 @@ const Model = use('Model')
 
 class Permission extends Model {
 
-    user() {
+    user()
+    {
         return this.belongsTo('App/Models/UserPermission')
     }
 

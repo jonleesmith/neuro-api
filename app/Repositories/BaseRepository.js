@@ -1,41 +1,49 @@
 
 class BaseRepository {
 
-    modelName() {
-        return 'App/Models/Site'
+    modelName()
+    {
+        return 'App/Models/Project'
     }
 
-    constructor(app) {
+    constructor(app)
+    {
         this.setModel()
     }
 
-    setModel() {
+    setModel()
+    {
         this.model = use(this.modelName())
     }
 
-    async findOne(id) {
+    async findOne(id)
+    {
         return await this.findOneBy({ 'id': id });
     }
 
-    async findOneBy(col, val) {
+    async findOneBy(col, val)
+    {
         return await this.model.findByOrFail(col, val)
     }
 
-    findIn(key, values) {
+    findIn(key, values)
+    {
         return this.model.query().whereIn(key, values).get();
     }
 
-    findBy(criteria) {
-
-        let _self = this
+    findBy(criteria)
+    {
+        let self = this
         let queryBuilder = this.model.query().where( function() {
-            _self.applySearchCriteriaInQueryBuilder(this, criteria);
+            self.applySearchCriteriaInQueryBuilder(this, criteria);
         });
-
         return queryBuilder
     }
 
-    applySearchCriteriaInQueryBuilder(query, criteria) {
+    applySearchCriteriaInQueryBuilder(query, criteria)
+    {
+
+        console.log(criteria)
 
         for ( let key in criteria )
         {
@@ -43,7 +51,7 @@ class BaseRepository {
             let value = criteria[key]
 
             // skip pagination related query params
-            if ( ['page', 'perPage'].includes(key) )
+            if ( ['page', 'limit'].includes(key) )
             {
                 continue;
             }

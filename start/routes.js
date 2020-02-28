@@ -26,16 +26,27 @@ Route.group(() => {
 
 Route.group(() => {
 
-    Route.get('/collections', 'ElementController.index')
-    Route.get('/collections/create', 'ElementController.create')
-    Route.post('/collections', 'ElementController.save')
-    Route.get('/collections/:collection', 'ElementController.show').middleware('rmb:Neuro/CollectionRepository,element')
-    Route.put('/collections/:collection', 'ElementController.update').middleware('rmb:Neuro/CollectionRepository,element')
-    Route.delete('/collections/:collection', 'ElementController.delete').middleware('rmb:Neuro/CollectionRepository,element')
+    Route.get('/collections', 'CollectionsController.index')
 
-    Route.get('/entries', 'ElementController.index')
-    Route.post('/entries', 'ElementController.save')
-    Route.get('/entries/:collection', 'ElementController.entries').middleware('rmb:Neuro/CollectionRepository,collection,handle')
+    Route.get('/collections/create', 'CollectionsController.create')
+
+    Route.post('/collections', 'CollectionsController.save')
+
+    Route.get('/collections/:collection', 'CollectionsController.show')
+        .middleware('rmb:Neuro/CollectionRepository,collection')
+
+    Route.put('/collections/:collection', 'CollectionsController.update')
+        .middleware('rmb:Neuro/CollectionRepository,collection')
+
+    Route.delete('/collections/:collection', 'CollectionsController.delete')
+        .middleware('rmb:Neuro/CollectionRepository,collection')
+
+    Route.get('/entries/:collection', 'CollectionsController.entries')
+        // .middleware('rmb:Neuro/CollectionRepository,collection,handle')
+
+
+    Route.get('/entries', 'EntriesController.index')
+    Route.post('/entries', 'EntriesController.store')
     // Route.put('/entries/:collection', 'ElementController.update').middleware('rmb:Neuro/CollectionRepository,element')
     // Route.delete('/entries/:collection', 'ElementController.delete').middleware('rmb:Neuro/CollectionRepository,element')
 
@@ -48,4 +59,4 @@ Route.group(() => {
    // GET /:project/enries/:collection/:id/revisions/:offset
    // PATCH /:project/enries/:collection/:id/revert/:revision
 
-}).prefix(':site').middleware([])
+}).prefix(':project').middleware([])

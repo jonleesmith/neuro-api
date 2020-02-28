@@ -4,20 +4,13 @@ const Model = use('Model')
 
 class Field extends Model {
 
-    static boot() {
-        super.boot()
-    }
-
-    static get computed() {
-        return ['model']
-    }
-
-    project() {
+    project()
+    {
         return this.belongsTo('App/Models/Project')
     }
 
-    getModel() {
-        return ''
+    collection() {
+        return this.belongsTo('App/Models/Collection')
     }
 
 }

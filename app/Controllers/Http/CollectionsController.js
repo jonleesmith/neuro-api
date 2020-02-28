@@ -1,14 +1,21 @@
 'use strict'
 
 const Collection = use('App/Models/Collection')
-const cp = use('Neuro/CollectionRepository')
+const Entry = use('App/Models/Entry')
+const CollectionRepository = use('Neuro/CollectionRepository')
+const EntryRepository = use('Neuro/EntryRepository')
 const Database = use('Adonis/Src/Database')
 
-class ElementController {
+class CollectionsController {
+
+    constructor() {
+        this.collections = CollectionRepository
+        this.entries = EntryRepository
+    }
 
     async index({ request, response, params })
     {
-        let elements = cp.findBy(request.all())
+        let elements = this.collections.findBy(request.all())
         let options = request.only(['page', 'limit']);
         return response.withPagination(elements, options)
     }
@@ -19,11 +26,11 @@ class ElementController {
         let name = request.input('name')
         // console.log(Database.Config)
         // return
-        if ( name )
+        if (name)
         {
-            await Database.schema.createTable(name, (table) => {
+            await Database.schema.table('content', (table) => {
                 // console.log(table)
-                // table.increments('id')
+                table.string(name).nullable()
             })
             console.log(`collection ${name} create`)
         }
@@ -34,18 +41,29 @@ class ElementController {
         })
     }
 
-    async show({ request, response, params, element })
+    async show({ request, response, params, collection })
     {
         // Authorization
-        request.authorize('show', element);
-        return response.withItem(element);
+        request.authorize('show', collection);
+        return response.withItem(collection);
     }
 
     async entries({ request, response, params, collection })
     {
-        return response.withItem({
-            data: [collection]
-        })
+
+        let elements = this.collections.findBy(request.all())
+        let options = request.only(['page', 'limit']);
+        return response.withPagination(elements, options)
+
+
+        // let options = request.only(['page', 'limit']);
+
+        // let entries = await this.entries.findBy({
+        //     collection_id: collection.id
+        // })
+        // // entries = entries.loadMany(['content'])
+        // // console.log(collection)
+        // return response.withPagination(entries, options)
     }
 
     async store({ request, response, params })
@@ -71,7 +89,7 @@ class ElementController {
 
     }
 
-    async update( { request, response, params } )
+    async update({ request, response, params })
     {
         // $id = $request->entryTypeId;
 
@@ -100,7 +118,7 @@ class ElementController {
 
     }
 
-    async destroy ( { request, response, params } )
+    async destroy({ request, response, params })
     {
         // $id = $request->entryTypeId;
 
@@ -120,4 +138,4 @@ class ElementController {
 
 }
 
-module.exports = ElementController
+module.exports = CollectionsController
