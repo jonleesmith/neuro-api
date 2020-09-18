@@ -35,7 +35,7 @@ class NeuroInitSeeder {
 
         const project = await Project.create({
             name: 'Later',
-            handle: 'later'
+            uid: 'later'
         })
 
         const user_project = await UserProject.create({
@@ -47,7 +47,7 @@ class NeuroInitSeeder {
             user_id: user.id,
             project_id: project.id,
             name: 'Bookmarks',
-            handle: 'bookmarks',
+            uid: 'bookmarks',
             custom_order: true,
             order_direction: 'asc',
         })

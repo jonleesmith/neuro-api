@@ -3,11 +3,11 @@
 const { ServiceProvider } = require('@adonisjs/fold')
 
 
-async function bindModels(request, next, [repository, param, column]) {
+async function bindModels(request, next, [model, param, column]) {
     const value = request.params[param];
     if ( value )
     {
-        request[param] = await use(repository).findOneBy({ [column]: value });
+        request[param] = await use(`App/Models/${model}`).findByOrFail(column, value);
     }
     await next();
 }

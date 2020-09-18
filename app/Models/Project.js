@@ -10,8 +10,7 @@ class Project extends Model
         return this.hasMany('App/Models/Collection')
     }
 
-    entries()
-    {
+    entries() {
         return this.hasMany('App/Models/Entry')
     }
 

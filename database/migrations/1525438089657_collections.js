@@ -10,7 +10,7 @@ class CollectionSchema extends Schema {
             table.integer('project_id').unsigned().references('id').inTable('projects').onDelete('cascade')
             table.integer('user_id').unsigned().references('id').inTable('users').onDelete('cascade')
             table.string('name', 128).notNull()
-            table.string('handle').notNull()
+            table.string('uid').notNull()
             table.text('description').nullable()
             table.float('order').default('1.00')
             table.boolean('has_status').default(true)
@@ -19,6 +19,7 @@ class CollectionSchema extends Schema {
             table.string('date_behaviour', 64).default('published_at')
             table.boolean('custom_order', 64).default(false) // order by date or manaully (drag n drop)
             table.string('order_direction', 64).default('desc') // manual (desc/asc)
+            table.boolean('global').default(false)
 			table.timestamps()
 		})
 	}

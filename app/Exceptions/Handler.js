@@ -25,6 +25,8 @@ class ExceptionHandler extends BaseExceptionHandler {
 
         use('Logger').error(error)
 
+        console.error(error)
+
         if ( error.status == 401 )
         {
             response.status(401)
@@ -42,9 +44,14 @@ class ExceptionHandler extends BaseExceptionHandler {
             })
         }
 
-        if (error.name === 'ValidationException')
+        if ( error.name === 'ValidationException' )
         {
             return response.withErrors(error.messages, 422)
+        }
+
+        if ( error.name === 'ModelNotFoundException' )
+        {
+            return response.withErrors(error.messages, 404)
         }
 
         return response.status(error.status).send(error.message)
@@ -62,7 +69,7 @@ class ExceptionHandler extends BaseExceptionHandler {
    * @return {void}
    */
   async report (error, { request }) {
-
+    console.log(error)
   }
 
 }

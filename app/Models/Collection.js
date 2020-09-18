@@ -4,9 +4,9 @@ const Model = use('Model')
 
 class Collection extends Model {
 
-    static get primaryKey ()
+    static get primaryKey()
     {
-        return 'handle'
+        return 'id'
     }
 
     static get fillable()
@@ -19,8 +19,12 @@ class Collection extends Model {
         return this.belongsTo('App/Models/Project')
     }
 
+    fields() {
+        return this.belongsToMany('App/Models/Field').pivotTable('collection_fields')
+    }
+
     entries() {
-        return this.belongsTo('App/Models/Entry')
+        return this.hasMany('App/Models/Entry')
     }
 
 }

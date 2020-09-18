@@ -53,7 +53,7 @@ class User extends Model {
 
     can()
     {
-
+        return true
     }
 
 }

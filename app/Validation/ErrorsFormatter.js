@@ -43,8 +43,11 @@ class ErrorsFormatter {
             message = 'This field is required.'
             break;
             case 'min':
-            message = 'Please enter at least ' + args + ' characters.'
+            message = `Please enter at least ${args} characters.`
             break;
+            case 'exists':
+            message = 'We could not find a match'
+            break
         }
 
         return message

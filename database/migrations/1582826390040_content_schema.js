@@ -8,7 +8,6 @@ class ContentSchema extends Schema {
     up () {
         this.create('content', (table) => {
             table.increments()
-            table.string('title').nullable()
         })
     }
 

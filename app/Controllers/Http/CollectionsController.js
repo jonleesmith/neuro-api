@@ -1,59 +1,86 @@
 'use strict'
 
-const Collection = use('App/Models/Collection')
-const Entry = use('App/Models/Entry')
-const CollectionRepository = use('Neuro/CollectionRepository')
-const EntryRepository = use('Neuro/EntryRepository')
+
+// const CollectionRepository = use('Neuro/CollectionRepository')
 const Database = use('Adonis/Src/Database')
+const Collection = use('App/Models/Collection')
 
-class CollectionsController {
+const { validateAll } = use('Validator')
 
-    constructor() {
-        this.collections = CollectionRepository
-        this.entries = EntryRepository
-    }
+class CollectionsController
+{
 
-    async index({ request, response, params })
+    async index({ request, response, project })
     {
-        let elements = this.collections.findBy(request.all())
+        let params = request.except(['page', 'limit'])
+        params.project_id = project.id
+        let elements = neuro.collections.findBy(params)
         let options = request.only(['page', 'limit']);
         return response.withPagination(elements, options)
     }
 
-    async create({ request, response, params, project })
-    {
-        console.log(project)
-        let name = request.input('name')
-        // console.log(Database.Config)
-        // return
-        if (name)
-        {
-            await Database.schema.table('content', (table) => {
-                // console.log(table)
-                table.string(name).nullable()
-            })
-            console.log(`collection ${name} create`)
-        }
+    // async store({ request, response, params, project })
+    // {
+    //     console.log(project)
 
-        return response.withItem({
-            id: 'Hi',
-            name: name,
-        })
-    }
+    //     let name = request.input('name')
+    //     let fields = request.input('fields')
+    //     // console.log(Database.Config)
+    //     // return
+    //     if (name)
+    //     {
+    //         await Database.schema.table('content', (table) => {
+    //             // console.log(table)
+    //             // table.increments()
 
-    async show({ request, response, params, collection })
+    //             fields.forEach((field) => {
+
+    //                 table.string(field).nullable()
+
+    //             })
+
+    //         })
+    //         console.log(`collection ${name} create`)
+    //     }
+
+    //     return response.withItem({ name, fields })
+    // }
+
+    async show({ request, response, auth, collection })
     {
+        // const user = await auth.getUser()
+
+        // $id = $request -> entryTypeId;
+
+        // $entryType = $this -> entryTypeRepository -> findOne($id);
+
+        // if (!$entryType instanceof EntryType) {
+        //     return $this -> sendNotFoundResponse("The entryType with id {$id} doesn't exist");
+        // }
+
+        // // Authorization
+        // $this -> authorize('show', $entryType);
+
+        // return $this -> respondWithItem($entryType, $this -> entryTypeTransformer);
+
         // Authorization
-        request.authorize('show', collection);
+        // request.authorize('show', user, collection);
+        await collection.load('fields')
+
         return response.withItem(collection);
     }
 
     async entries({ request, response, params, collection })
     {
 
-        let elements = this.collections.findBy(request.all())
-        let options = request.only(['page', 'limit']);
-        return response.withPagination(elements, options)
+        // let elements = this.collections.findBy(request.all())
+        // let options = request.only(['page', 'limit']);
+        // return response.withPagination(elements, options)
+
+
+        let elements = neuro.entries.findBy(request.all())
+        // let options = request.only(['page', 'limit']);
+        return response.withPagination(elements, {})
 
 
         // let options = request.only(['page', 'limit']);
@@ -66,8 +93,29 @@ class CollectionsController {
         // return response.withPagination(entries, options)
     }
 
-    async store({ request, response, params })
+    async store({ request, response, auth, project })
     {
+
+        const user = await auth.getUser()
+
+        let attributes = request.all();
+
+        let validation = await validateAll(attributes, {
+            'name': 'required',
+            'uid': 'required',
+        })
+
+        if ( validation.fails() )
+        {
+            return response.withErrors(validation.messages())
+        }
+
+        attributes.project_id = project.id
+        attributes.user_id = user.id
+
+        const collection = await neuro.collections.save(attributes)
+
+        return response.withItem(collection)
 
         // Validation
         // $validatorResponse = $this->validateRequest($request, $this->storeRequestValidationRules($request));

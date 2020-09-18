@@ -6,16 +6,10 @@ class Entry extends Model {
 
     collection()
     {
-        return this.belongsTo('App/Models/Collection')
+        return this.belongsTo('App/Models/Collection', 'collection_id', 'id')
     }
 
-    project()
-    {
-        return this.belongsTo('App/Models/Project')
-    }
-
-    author()
-    {
+    author() {
         return this.hasOne('App/Models/User')
     }
 

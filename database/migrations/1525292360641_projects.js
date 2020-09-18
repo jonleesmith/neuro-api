@@ -8,7 +8,7 @@ class ProjectsSchema extends Schema {
 		this.create('projects', (table) => {
 			table.increments()
             table.string('name', 128).notNull()
-            table.string('handle').unique().notNull()
+            table.string('uid').unique().notNull()
 			table.timestamps()
 		})
 	}

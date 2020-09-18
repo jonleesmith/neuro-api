@@ -4,7 +4,12 @@ const { ServiceProvider } = require('@adonisjs/fold')
 
 const ErrorsFormatter = use('App/Validation/ErrorsFormatter')
 
+const EntryRepository = use('App/Repositories/EntryRepository')
+const CollectionRepository = use('App/Repositories/CollectionRepository')
+
 const UnauthorizedAccessException = use('App/Exceptions/UnauthorizedAccessException')
+
+const { validateAll } = use('Validator')
 
 class AppServiceProvider extends ServiceProvider {
 
@@ -24,11 +29,19 @@ class AppServiceProvider extends ServiceProvider {
         const Request = use('Adonis/Src/Request');
         const Model = use('Model')
 
-        Response.macro('withErrors', this.withErrorsMacro)
         Request.macro('authorize', this.authorizeMacro)
+        Request.macro('validate', this.validateMacro)
+
+        Response.macro('withErrors', this.withErrorsMacro)
         Response.macro('withItem', this.withItemMacro)
         Response.macro('withPagination', this.withPaginationMacro)
-        Model.castDates = this.castDatesMacro
+        // Model.castDates = this.castDatesMacro
+
+        const neuro = {}
+        neuro.entries = new EntryRepository()
+        neuro.collections = new CollectionRepository()
+
+        global.neuro = neuro
 
     }
 
@@ -52,15 +65,9 @@ class AppServiceProvider extends ServiceProvider {
         return await items.paginate(page, limit)
     }
 
-    castDatesMacro(field, value)
-    {
-        let full = value.format('MMMM Do, YYYY');
-        let timeAgo = value.fromNow(false);
-        return `${ ( timeAgo.indexOf('month') != -1 ) ? full : `${timeAgo}` }`
-    }
-
     withErrorsMacro(errors, status)
     {
+        status = status || 422
         this.status(status)
         return this.json({
             status,
@@ -70,10 +77,23 @@ class AppServiceProvider extends ServiceProvider {
 
     authorizeMacro(action, user, model)
     {
-        return true;
-        // if ( !user.can(action, model) ) {
-        //     throw new UnauthorizedAccessException()
-        // }
+        if ( !user.can(action, model) ) {
+            throw new UnauthorizedAccessException()
+        }
+        return true
+    }
+
+    async validateMacro(data, rules)
+    {
+        console.log(data, rules)
+
+        const validation = await validateAll(data, rules)
+
+        if (validation.fails())
+        {
+            throw new Error(validation.messages())
+        }
+
     }
 
 }

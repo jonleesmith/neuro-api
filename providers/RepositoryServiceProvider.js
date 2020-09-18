@@ -15,19 +15,15 @@ class RepositoryServiceProvider extends ServiceProvider {
     */
     register () {
 
-        this.app.bind('Neuro/CollectionRepository', function(app) {
-            return new CollectionRepository(this)
+
+        this.app.singleton('Neuro/CollectionRepository', function(app) {
+            return new CollectionRepository()
         })
 
-        this.app.bind('Neuro/EntryRepository', function (app) {
-            return new EntryRepository(this)
+        this.app.singleton('Neuro/EntryRepository', function (app) {
+            return new EntryRepository()
         })
 
-    // this.app.bind(SiteRepository::class, EloquentSiteRepository::class);
-    // this.app.bind(UserRepository::class, EloquentUserRepository::class);
-    // this.app.bind(CollectionTypeRepository::class, EloquentCollectionTypeRepository::class);
-    // this.app.bind(FieldRepository::class, EloquentFieldRepository::class);
-    //
     }
 
     /**
@@ -39,6 +35,7 @@ class RepositoryServiceProvider extends ServiceProvider {
     * @return {void}
     */
     boot () {
+
         // return [
         //     UserRepository::class,
         //     SiteRepository::class,

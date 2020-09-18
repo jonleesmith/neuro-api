@@ -9,6 +9,7 @@ class AuthController {
     async login({ request, response, auth })
     {
 
+
         const { email, password } = request.only(['email', 'password'])
 
         const user = await Persona.verify({
@@ -27,7 +28,7 @@ class AuthController {
         }
         else {
             return response.json({
-                status: 422,
+                status: 401,
                 message: 'Unable to log you in with the details provided'
             })
         }
@@ -36,7 +37,6 @@ class AuthController {
 
     async register({ request, auth, response })
     {
-        const payload = request.only(['email', 'password', 'password_confirmation'])
 
         const user = await Persona.register(payload)
 
@@ -59,12 +59,25 @@ class AuthController {
     {
         let user = await auth.getUser();
 
-        await user.loadMany(['role', 'projects'])
+        await user.loadMany(['role', 'projects.collections'])
 
         return response.json({
             data: user.toJSON()
         })
     }
+
+    // async me({ request, response, auth })
+    // {
+    //     let user = await auth.getUser();
+
+    //     await user.loadMany(['projects'])
+
+    //     let userJson = user.toJSON()
+
+    //     return response.json({
+    //         data: userJson.projects
+    //     })
+    // }
 
     async forgotPassword({ request, response })
     {

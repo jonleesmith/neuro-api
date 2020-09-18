@@ -1,6 +1,8 @@
 
 class BaseRepository {
 
+    defaultIncludes = []
+
     modelName()
     {
         return 'App/Models/Project'
@@ -31,11 +33,15 @@ class BaseRepository {
         return this.model.query().whereIn(key, values).get();
     }
 
-    findBy(criteria)
-    {
-        let self = this
-        let queryBuilder = this.model.query().where( function() {
-            self.applySearchCriteriaInQueryBuilder(this, criteria);
+    findBy(criteria) {
+        let _self = this
+        let queryBuilder = this.model.query()
+
+        this.defaultIncludes.forEach(relation => {
+            queryBuilder.with(relation)
+        })
+        queryBuilder.where(function () {
+            _self.applySearchCriteriaInQueryBuilder(this, criteria);
         });
         return queryBuilder
     }
@@ -50,16 +56,9 @@ class BaseRepository {
 
             let value = criteria[key]
 
-            // skip pagination related query params
-            if ( ['page', 'limit'].includes(key) )
-            {
-                continue;
-            }
-
             // we can pass multiple params for a filter with commas
             let allValues = value.split(',');
-
-            if ( allValues.length > 1)
+            if ( allValues.length )
             {
                 query.whereIn(key, allValues);
             }
@@ -73,12 +72,10 @@ class BaseRepository {
         return query;
     }
 
-    save(data)
     {
         return this.model.create(data);
     }
 
-    update(data)
     {
         // fillAbleProperties = this.model.getFillable();
 
@@ -102,7 +99,7 @@ class BaseRepository {
         // return model;
     }
 
-    delete(key) {
+ {
         // return model.delete();
     }
 
