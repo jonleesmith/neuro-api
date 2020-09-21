@@ -1,7 +1,4 @@
 'use strict'
-
-const { validateAll } = use('Validator')
-const User = use('App/Models/User')
 const Persona = use('Persona')
 
 class AuthController {
